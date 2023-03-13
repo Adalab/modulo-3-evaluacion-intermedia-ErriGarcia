@@ -32,10 +32,10 @@ const App = () => {
 
   const handleSearchCharacter = (ev) => {
     const inputValue = ev.target.value
-    if (inputValue === 'Todos') {
-      setCharacter()
-    }
     setCharacter(inputValue)
+    // if (inputValue === 'Todos') {
+    //   return results
+    // }
   }
 
   const handleInput = (ev) => {
@@ -44,15 +44,14 @@ const App = () => {
     setNewPhrase({...newPhrase, [inputName]: inputValue})
   }
 
-  const handleClick = (ev) => {
-    if (!newPhrase) {
+  const handleClick = () => {
       setResults([...results, newPhrase])
       setNewPhrase({
         quote: "",
         character: ""
       })
-    }
-  }
+  } 
+  
 
   const handleSubmit = (ev) => {
     ev.preventDefault()
@@ -62,23 +61,29 @@ const App = () => {
   // Functions to render
 
   const renderPhrases = () => {
-    return (results
-      .filter(result => result.character.includes(character))
+    return (results 
+      .filter(result => {
+        if(character === 'Todos') {
+          return true
+        } else {
+          return result.character.includes(character)
+        }
+        })
       .filter(result => result.quote.toLowerCase().includes(searchPhrase.toLowerCase()))
       .map((result, index) => {
-      return <li key={index}>
+      return <li className="list" key={index}>
         <p>{result.quote}</p>
-        <span>{result.character}</span>
+        <span className="name-character">{result.character}</span>
       </li>
     }))
   }
 
   return (
     <div>
-      <header>
-        <h1>Frases de Friends</h1>
+      <header className="header">
+        <h1 className="title">Frases de Friends</h1>
       </header>
-      <form onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
 
         <label htmlFor="user-text">
           Filtrar por frase
@@ -92,7 +97,7 @@ const App = () => {
           </input>
         </label>
 
-        <label htmlFor="character">
+        <label className="label" htmlFor="character">
           Filtrar por personaje
           <select 
           name="character" 
@@ -110,12 +115,14 @@ const App = () => {
         </label>
       </form>
       <main>
-        <ul>
+        <ul className="unordered-list">
           {renderPhrases()}
         </ul>
 
-        <h2>Añadir una nueva frase</h2>
-        <label htmlFor="user-add-phrase">
+        <h2 className="title-add">Añadir una nueva frase</h2>
+        <form className="form-add" onSubmit={handleSubmit}>
+        <label htmlFor="user-add-phrase" value="frase">
+          Frase
           <input 
           type="text" 
           name="quote" 
@@ -124,7 +131,8 @@ const App = () => {
           onChange={handleInput}
           />
         </label>
-        <label htmlFor="user-add-character">
+        <label className="label" htmlFor="user-add-character" value="Personaje">
+          Personaje
           <input 
           type="text"
           name="character"
@@ -138,6 +146,7 @@ const App = () => {
         value="Añadir nueva frase"
         onClick={handleClick}
         />
+        </form>
       </main>
     </div>
   )
