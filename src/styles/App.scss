@@ -63,3 +63,10 @@ input[type=button] {
     cursor: pointer;
     border-radius: 6px;
 }
+
+.error-message {
+    display: flex;
+    justify-content: center;
+    color: red;
+    font-weight: bold;
+}

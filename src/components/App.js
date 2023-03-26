@@ -13,6 +13,7 @@ const App = () => {
       character: ""
     }
   )
+  const [errorMessage, setErrorMessage] = useState('')
 
 
   // Fetch
@@ -33,9 +34,6 @@ const App = () => {
   const handleSearchCharacter = (ev) => {
     const inputValue = ev.target.value
     setCharacter(inputValue)
-    // if (inputValue === 'Todos') {
-    //   return results
-    // }
   }
 
   const handleInput = (ev) => {
@@ -45,11 +43,16 @@ const App = () => {
   }
 
   const handleClick = () => {
+    if (newPhrase.quote !== '' && newPhrase.character !== '') {
       setResults([...results, newPhrase])
       setNewPhrase({
         quote: "",
         character: ""
       })
+      setErrorMessage('')
+    } else {
+      setErrorMessage('Por favor rellena todos los campos')
+    }
   } 
   
 
@@ -147,6 +150,9 @@ const App = () => {
         onClick={handleClick}
         />
         </form>
+        <p className="error-message">
+          {errorMessage}
+        </p>
       </main>
     </div>
   )
